@@ -88,7 +88,7 @@ header input {
   background-color: #e5e500;
 }
 
-header #sort {
+header #searchDropDown {
   height: 50px;
   width: 100px;
   background-color: #e5e500;
@@ -100,7 +100,7 @@ header button {
   border-color: #e5acb6;
 }
 
-header #sort:hover, header button:hover, header #sort option:hover {
+header #searchDropDown:hover, header button:hover, header #searchDropDown option:hover {
   cursor: pointer;
 }
 

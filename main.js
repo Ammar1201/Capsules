@@ -5,11 +5,11 @@
 
 const table = document.querySelector('#container');
 const header = document.querySelector('#header');
-
+const info = [];
 let lightORdark = true; //* true - light class, false - dark class
 
-const info = [];
 
+//* async functions
 const fetchData = async (url) => {
   try {
     const res = await fetch(url);
@@ -37,6 +37,37 @@ const getData = async () => {
   return await Promise.all(students);
 }
 
+//* Utility functions
+const selectSpans = (row) => {
+  const spans = [];
+  let child = row.firstElementChild;
+  while(child !== null) {
+    if(child.tagName === 'SPAN') {
+      spans.push(child);
+    }
+    child = child.nextElementSibling;
+  }
+  return spans;
+}
+
+const objToArr = (obj) => {
+  const {gender, firstName, lastName, hobby, age, city, capsule} = obj;
+
+  return [firstName, lastName, capsule, age, city, gender, hobby];
+};
+
+const checkTarget = target => {
+  return target.id !== 'confirm-edit' && target.id !== 'cancel-edit' && target.id !== 'confirm-delete' && target.id !== 'cancel-delete';
+};
+
+const cancel = target => {
+  target.previousElementSibling.classList.remove('hide');
+  target.previousElementSibling.previousElementSibling.classList.remove('hide');
+  target.nextElementSibling.remove();
+  target.remove();
+};
+
+//* creating elements functions
 const createBtns = (cont) => {
   const editBtn = document.createElement('button');
   editBtn.textContent = 'Edit';
@@ -86,31 +117,13 @@ const createRow = () => {
   return row;
 }
 
-const selectSpans = (row) => {
-  const spans = [];
-  let child = row.firstElementChild;
-  while(child !== null) {
-    if(child.tagName === 'SPAN') {
-      spans.push(child);
-    }
-    child = child.nextElementSibling;
-  }
-  return spans;
-}
-
-const objToArr = (obj) => {
-  const {gender, firstName, lastName, hobby, age, city, capsule} = obj;
-
-  return [firstName, lastName, capsule, age, city, gender, hobby];
-};
-
+//*  displaying Data functions
 const appendData = (student, row) => {
   const spans = selectSpans(row);
   let i = 0;
   row.firstChild.textContent = parseInt(student.id);
 
   const studentArr = objToArr(student);
-  // data.push([parseInt(student.id), ...studentArr]);
 
   for(let key of studentArr) {
     spans[i].textContent = key;
@@ -127,10 +140,7 @@ const displayData = async () => {
   }
 }
 
-const checkTarget = target => {
-  return target.id !== 'confirm-edit' && target.id !== 'cancel-edit' && target.id !== 'confirm-delete' && target.id !== 'cancel-delete';
-};
-
+//* functionality functions
 const handleEdit = tar => {
   const target = tar.parentElement.parentElement;
   const spans = selectSpans(target);
@@ -187,56 +197,45 @@ const confirmOrCancelEdit = (target, status) => {
   confirmEdit(target.nextElementSibling);
 };
 
-const cancel = target => {
-  target.previousElementSibling.classList.remove('hide');
-  target.previousElementSibling.previousElementSibling.classList.remove('hide');
-  target.nextElementSibling.remove();
-  target.remove();
+//* event listeners
+const startEvents = () => {
+  window.addEventListener('load', () => {
+    displayData();
+  });
+  
+  table.addEventListener('click', (event) => {
+    const target = event.target;
+  
+    if(target.classList != '') {
+      if(target.classList.contains('light-button') && checkTarget(target)) {
+        handleEdit(target);
+        confirmOrCancel(target, 'edit');
+      }
+      else if(target.classList.contains('dark-button') && checkTarget(target)) {
+        confirmOrCancel(target.previousElementSibling, 'delete');
+      }
+      else if(target.id == 'confirm-edit') {
+        confirmOrCancelEdit(target, 'confirm');
+      }
+      else if(target.id == 'cancel-edit') {
+        confirmOrCancelEdit(target, 'cancel');
+      }
+      else if(target.id == 'confirm-delete') {
+        handleDelete(target);
+      }
+      else if(target.id == 'cancel-delete') {
+        cancel(target);
+      }
+    }
+  },
+  {
+    capture : true
+  }
+  );
 };
 
-window.addEventListener('load', () => {
-  displayData();
-});
-
-table.addEventListener('click', (event) => {
-  const target = event.target;
-
-  console.dir(target);
-
-  if(target.classList != '') {
-    if(target.classList.contains('light-button') && checkTarget(target)) {
-      handleEdit(target);
-      confirmOrCancel(target, 'edit');
-    }
-    else if(target.classList.contains('dark-button') && checkTarget(target)) {
-      confirmOrCancel(target.previousElementSibling, 'delete');
-    }
-    else if(target.id == 'confirm-edit') {
-      confirmOrCancelEdit(target, 'confirm');
-    }
-    else if(target.id == 'cancel-edit') {
-      confirmOrCancelEdit(target, 'cancel');
-    }
-    else if(target.id == 'confirm-delete') {
-      handleDelete(target);
-    }
-    else if(target.id == 'cancel-delete') {
-      cancel(target);
-    }
-    //confirmOrCancelDelete(target);
-  }
-},
-{
-  capture : true
+const main = function() {
+  startEvents();
 }
-);
 
-// header.addEventListener('click', (event) => {
-//   const target = event.target;
-//   console.log(target);
-// },
-// {
-//   capture : true
-// }
-// );
-
+main();
