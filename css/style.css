@@ -3,3 +3,40 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  background-color: #00cccc;
+}
+
+header {
+  height: 14vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  font-size: 2rem;
+  border: 1px solid black;
+}
+
+header h1 {
+  color: #006666;
+}
+
+header input {
+  height: 50px;
+  width: 200px;
+  padding-left: 5px;
+  background-color: #e5e500;
+}
+
+header #sort {
+  height: 50px;
+  width: 100px;
+  background-color: #e5e500;
+}
+
+header button {
+  padding: 1rem 2rem;
+  background-color: #e5acb6;
+  border-color: #e5acb6;
+}
