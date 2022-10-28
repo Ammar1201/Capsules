@@ -5,6 +5,7 @@
 
 const table = document.querySelector('#container');
 const header = document.querySelector('#header');
+const reset = document.querySelector('#reset');
 const info = [];
 let lightORdark = true; //* true - light class, false - dark class
 
@@ -60,6 +61,17 @@ const checkTarget = target => {
   return target.id !== 'confirm-edit' && target.id !== 'cancel-edit' && target.id !== 'confirm-delete' && target.id !== 'cancel-delete';
 };
 
+const addClass = row => {
+  if(row.previousElementSibling != null) {
+    if(row.previousElementSibling.classList.contains('light-row')) {
+      row.setAttribute('class', 'dark-row');
+    }
+    else {
+      row.setAttribute('class', 'light-row');
+    }
+  }
+};
+
 const cancel = target => {
   target.previousElementSibling.classList.remove('hide');
   target.previousElementSibling.previousElementSibling.classList.remove('hide');
@@ -92,11 +104,11 @@ const createRow = () => {
   const row = document.createElement('div');
 
   if(lightORdark) {
-    row.classList.add('light-row');
+    row.setAttribute('class', 'light-row');
     lightORdark = !lightORdark;
   }
   else {
-    row.classList.add('dark-row');
+    row.setAttribute('class', 'dark-row');
     lightORdark = !lightORdark;
   }
 
@@ -137,6 +149,28 @@ const displayData = async () => {
   for(let student of students) {
     const row = createRow();
     appendData(student, row);
+  }
+}
+
+const resetData = async (target) => {
+  const students = await getData();
+  let row = target.parentElement.nextElementSibling.firstElementChild.nextElementSibling;
+  let counter = 0;
+
+  for(let student of students) {
+    if(row != null) {
+      appendData(student, row);
+      addClass(row);
+      row = row.nextElementSibling;
+      counter += 1;
+    }
+  }
+
+  if(counter != students.length) {
+    for(let i = counter; i < students.length; i++) {
+      const row = createRow();
+      appendData(students[i], row);
+    }
   }
 }
 
@@ -201,6 +235,11 @@ const confirmOrCancelEdit = (target, status) => {
 const startEvents = () => {
   window.addEventListener('load', () => {
     displayData();
+  });
+
+  reset.addEventListener('click', (event) => {
+    lightORdark = true;
+    resetData(event.target);
   });
   
   table.addEventListener('click', (event) => {
