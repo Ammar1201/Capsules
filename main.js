@@ -8,7 +8,7 @@ const header = document.querySelector('#header');
 
 let lightORdark = true; //* true - light class, false - dark class
 
-const data = [];
+const info = [];
 
 const fetchData = async (url) => {
   try {
@@ -110,7 +110,7 @@ const appendData = (student, row) => {
   row.firstChild.textContent = parseInt(student.id);
 
   const studentArr = objToArr(student);
-  data.push([parseInt(student.id), ...studentArr]);
+  // data.push([parseInt(student.id), ...studentArr]);
 
   for(let key of studentArr) {
     spans[i].textContent = key;
@@ -120,7 +120,6 @@ const appendData = (student, row) => {
 
 const displayData = async () => {
   const students = await getData();
-  // const student = {id:"005", gender:"male", firstName:"עמאר", lastName:"אלעמור", hobby:"משחקי מחשב", age:21, city:"כסיפה", capsule:2};
 
   for(let student of students) {
     const row = createRow();
@@ -128,9 +127,109 @@ const displayData = async () => {
   }
 }
 
+const checkTarget = target => {
+  return target.id !== 'confirm-edit' && target.id !== 'cancel-edit' && target.id !== 'confirm-delete' && target.id !== 'cancel-delete';
+};
+
+const handleEdit = tar => {
+  const target = tar.parentElement.parentElement;
+  const spans = selectSpans(target);
+
+  spans.forEach(span => {
+    span.setAttribute('contentEditable', 'true');
+    info.push(span.textContent);
+  });
+};
+
+const handleDelete = tar => {
+  const target = tar.parentElement.parentElement;
+  target.remove();
+};
+
+const confirmOrCancel = (target, status) => {
+  target.classList.add('hide');
+  target.nextElementSibling.classList.add('hide');
+
+  const cancel = document.createElement('button');
+  cancel.textContent = 'Cancel';
+  cancel.classList.add('dark-button');
+  cancel.id = 'cancel-' + status;
+
+  const confirm = document.createElement('button');
+  confirm.textContent = 'Confirm';
+  confirm.classList.add('light-button');
+  confirm.id = 'confirm-' + status;
+
+  target.parentElement.appendChild(cancel);
+  target.parentElement.appendChild(confirm);
+};
+
+const confirmEdit = target => {
+  const spans = selectSpans(target.parentElement.parentElement);
+  spans.forEach(span => {
+    span.removeAttribute('contentEditable');
+  });
+  cancel(target.previousElementSibling);
+};
+
+const confirmOrCancelEdit = (target, status) => {
+  if(status === 'confirm') {
+    confirmEdit(target);
+    return;
+  }
+
+  const spans = selectSpans(target.parentElement.parentElement);
+  let i = 0;
+  spans.forEach(span => {
+    span.textContent = info[i];
+    i += 1;
+  });
+  confirmEdit(target.nextElementSibling);
+};
+
+const cancel = target => {
+  target.previousElementSibling.classList.remove('hide');
+  target.previousElementSibling.previousElementSibling.classList.remove('hide');
+  target.nextElementSibling.remove();
+  target.remove();
+};
+
 window.addEventListener('load', () => {
   displayData();
 });
+
+table.addEventListener('click', (event) => {
+  const target = event.target;
+
+  console.dir(target);
+
+  if(target.classList != '') {
+    if(target.classList.contains('light-button') && checkTarget(target)) {
+      handleEdit(target);
+      confirmOrCancel(target, 'edit');
+    }
+    else if(target.classList.contains('dark-button') && checkTarget(target)) {
+      confirmOrCancel(target.previousElementSibling, 'delete');
+    }
+    else if(target.id == 'confirm-edit') {
+      confirmOrCancelEdit(target, 'confirm');
+    }
+    else if(target.id == 'cancel-edit') {
+      confirmOrCancelEdit(target, 'cancel');
+    }
+    else if(target.id == 'confirm-delete') {
+      handleDelete(target);
+    }
+    else if(target.id == 'cancel-delete') {
+      cancel(target);
+    }
+    //confirmOrCancelDelete(target);
+  }
+},
+{
+  capture : true
+}
+);
 
 // header.addEventListener('click', (event) => {
 //   const target = event.target;

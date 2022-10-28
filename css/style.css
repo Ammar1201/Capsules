@@ -57,7 +57,14 @@ body {
   align-self: flex-end;
   justify-content: flex-end;
   align-items: flex-end;
-  /* gap: 5px; */
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: inline-block;
 }
 
 /** main header*/
