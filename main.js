@@ -4,8 +4,11 @@
 //* https://capsules7.herokuapp.com/api/group/:number
 
 const table = document.querySelector('#container');
+const header = document.querySelector('#header');
 
 let lightORdark = true; //* true - light class, false - dark class
+
+const data = [];
 
 const fetchData = async (url) => {
   try {
@@ -107,9 +110,9 @@ const appendData = (student, row) => {
   row.firstChild.textContent = parseInt(student.id);
 
   const studentArr = objToArr(student);
+  data.push([parseInt(student.id), ...studentArr]);
 
   for(let key of studentArr) {
-
     spans[i].textContent = key;
     i += 1;
   }
@@ -125,4 +128,16 @@ const displayData = async () => {
   }
 }
 
-displayData();
+window.addEventListener('load', () => {
+  displayData();
+});
+
+// header.addEventListener('click', (event) => {
+//   const target = event.target;
+//   console.log(target);
+// },
+// {
+//   capture : true
+// }
+// );
+

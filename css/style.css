@@ -34,6 +34,10 @@ body {
   margin-right: 5px;
 }
 
+.light-button:hover, .dark-button:hover {
+  cursor: pointer;
+}
+
 .light-button {
   background-color: lightblue;
   border-color: lightblue;
@@ -89,6 +93,10 @@ header button {
   border-color: #e5acb6;
 }
 
+header #sort:hover, header button:hover, header #sort option:hover {
+  cursor: pointer;
+}
+
 /** data container*/
 #container {
   width: 90vw;
@@ -109,6 +117,10 @@ header button {
   font-size: 1.5rem;
   width: 200px;
   text-align: left;
+}
+
+#header button:hover {
+  cursor: pointer;
 }
 
 #header:first-child {
