@@ -9,16 +9,22 @@ body {
 }
 
 /** Utility  */
-.light-row {
+.light-row, .dark-row {
   display: flex;
-  gap: 8rem;
-  background-color: #e5e500;
+  gap: 4rem;
   padding: 8px 0;
+  padding-left: 5px;
+}
+
+.light-row > *, .dark-row > * {
+  width: 200px;;
+}
+
+.light-row {
+  background-color: #e5e500;
 }
 
 .dark-row {
-  display: flex;
-  gap: 10rem;
   background-color: #e5acb6;
 }
 
@@ -38,7 +44,7 @@ body {
 }
 
 .font {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .btns {
@@ -91,8 +97,8 @@ header button {
 /** data header*/
 #header {
   display: flex;
-  /* justify-content: space-evenly; */
-  gap: 8rem;
+  /* gap: 8rem; */
+  gap: 4rem;
   background-color: #009999;
   padding: 8px 0;
 }
@@ -100,7 +106,13 @@ header button {
 #header button {
   background: transparent;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  width: 200px;
+  text-align: left;
+}
+
+#header:first-child {
+  padding-left: 5px;
 }
 
 /** data table*/

@@ -34,6 +34,26 @@ const getData = async () => {
   return await Promise.all(students);
 }
 
+const createBtns = (cont) => {
+  const editBtn = document.createElement('button');
+  editBtn.textContent = 'Edit';
+  editBtn.classList.add('light-button');
+  cont.appendChild(editBtn);
+  
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = 'Delete';
+  deleteBtn.classList.add('dark-button');
+  cont.appendChild(deleteBtn);
+}
+
+const createSpans = (row) => {
+  for(let i = 0; i < 7; i++) {
+    const span = document.createElement('span');
+    span.classList.add('font');
+    row.appendChild(span);
+  }
+}
+
 const createRow = () => {
   const row = document.createElement('div');
 
@@ -50,39 +70,54 @@ const createRow = () => {
   
   const IDlabel = document.createElement('label');
   IDlabel.classList.add('font');
-  IDlabel.textContent = 'test'
   row.appendChild(IDlabel);
 
-  for(let i = 0; i < 7; i++) {
-    const span = document.createElement('span');
-    span.classList.add('font');
-    span.textContent = 'test';
-    row.appendChild(span);
-  }
+  createSpans(row);
 
   const div = document.createElement('div');
   div.classList.add('btns');
 
-  const editBtn = document.createElement('button');
-  editBtn.textContent = 'Edit';
-  editBtn.classList.add('light-button');
-  div.appendChild(editBtn);
-  
-  const deleteBtn = document.createElement('button');
-  deleteBtn.textContent = 'Delete';
-  deleteBtn.classList.add('dark-button');
-  div.appendChild(deleteBtn);
+  createBtns(div);
 
   row.appendChild(div);
+  return row;
+}
+
+const selectSpans = (row) => {
+  const spans = [];
+  let child = row.firstElementChild;
+  while(child !== null) {
+    if(child.tagName === 'SPAN') {
+      spans.push(child);
+    }
+    child = child.nextElementSibling;
+  }
+  return spans;
+}
+
+const appendData = (student, row) => {
+  const spans = selectSpans(row);
+
+  let i = 0;
+
+  row.firstChild.textContent = parseInt(student.id);
+
+  for(let key in student) {
+    if(key !== 'id' && i < spans.length) {
+      spans[i].textContent = student[key];
+      i += 1;
+    }
+  }
 }
 
 const displayData = async () => {
-  // const data = await getData();
+  const students = await getData();
+  // const student = {id:"005", gender:"male", firstName:"עמאר", lastName:"אלעמור", hobby:"משחקי מחשב", age:21, city:"כסיפה", capsule:2};
 
-  const row = createRow();
-
-  // appendData(data, row);
-  appendData(row);
+  for(let student of students) {
+    const row = createRow();
+    appendData(student, row);
+  }
 }
 
 displayData();
