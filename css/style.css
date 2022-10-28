@@ -15,7 +15,7 @@ header {
   align-items: center;
   gap: 4rem;
   font-size: 2rem;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 header h1 {
@@ -39,4 +39,34 @@ header button {
   padding: 1rem 2rem;
   background-color: #e5acb6;
   border-color: #e5acb6;
+}
+
+#container {
+  width: 90vw;
+  margin: auto;
+}
+
+#header {
+  display: flex;
+  /* justify-content: space-evenly; */
+  gap: 8rem;
+  background-color: #009999;
+}
+
+#header button {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+}
+
+.light {
+  display: flex;
+  gap: 8rem;
+  background-color: #e5e500;
+}
+
+.dark {
+  display: flex;
+  gap: 8rem;
+  background-color: #e5acb6;
 }
