@@ -6,6 +6,7 @@
 const table = document.querySelector('#container');
 const header = document.querySelector('#header');
 const reset = document.querySelector('#reset');
+const searchDropdown = document.querySelector('#searchDropdown');
 const info = [];
 let lightORdark = true; //* true - light class, false - dark class
 
@@ -146,6 +147,13 @@ const appendData = (student, row) => {
 const displayData = async () => {
   const students = await getData();
 
+  students.sort((a, b) => { // sort students by ID
+    if(parseInt(a.id) > parseInt(b.id)) {
+      return 1;
+    }
+    return -1;
+  });
+
   for(let student of students) {
     const row = createRow();
     appendData(student, row);
@@ -156,6 +164,13 @@ const resetData = async (target) => {
   const students = await getData();
   let row = target.parentElement.nextElementSibling.firstElementChild.nextElementSibling;
   let counter = 0;
+
+  students.sort((a, b) => { // sort students by ID
+    if(parseInt(a.id) > parseInt(b.id)) {
+      return 1;
+    }
+    return -1;
+  });
 
   for(let student of students) {
     if(row != null) {
