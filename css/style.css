@@ -8,6 +8,48 @@ body {
   background-color: #00cccc;
 }
 
+/** Utility  */
+.light-row {
+  display: flex;
+  gap: 8rem;
+  background-color: #e5e500;
+  padding: 8px 0;
+}
+
+.dark-row {
+  display: flex;
+  gap: 10rem;
+  background-color: #e5acb6;
+}
+
+.light-button, .dark-button {
+  padding: .5rem 2rem;
+  font-size: 1.2rem;
+}
+
+.light-button {
+  background-color: lightblue;
+  border-color: lightblue;
+}
+
+.dark-button {
+  background-color: #ff7f7f;
+  border-color: #ff7f7f;
+}
+
+.font {
+  font-size: 2rem;
+}
+
+.btns {
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+/** main header*/
 header {
   height: 14vh;
   display: flex;
@@ -15,7 +57,6 @@ header {
   align-items: center;
   gap: 4rem;
   font-size: 2rem;
-  /* border: 1px solid black; */
 }
 
 header h1 {
@@ -41,16 +82,19 @@ header button {
   border-color: #e5acb6;
 }
 
+/** data container*/
 #container {
   width: 90vw;
   margin: auto;
 }
 
+/** data header*/
 #header {
   display: flex;
   /* justify-content: space-evenly; */
   gap: 8rem;
   background-color: #009999;
+  padding: 8px 0;
 }
 
 #header button {
@@ -59,14 +103,8 @@ header button {
   font-size: 2rem;
 }
 
-.light {
+/** data table*/
+/* #table > div{
   display: flex;
   gap: 8rem;
-  background-color: #e5e500;
-}
-
-.dark {
-  display: flex;
-  gap: 8rem;
-  background-color: #e5acb6;
-}
+} */
