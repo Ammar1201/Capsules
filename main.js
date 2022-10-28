@@ -95,18 +95,23 @@ const selectSpans = (row) => {
   return spans;
 }
 
+const objToArr = (obj) => {
+  const {gender, firstName, lastName, hobby, age, city, capsule} = obj;
+
+  return [firstName, lastName, capsule, age, city, gender, hobby];
+};
+
 const appendData = (student, row) => {
   const spans = selectSpans(row);
-
   let i = 0;
-
   row.firstChild.textContent = parseInt(student.id);
 
-  for(let key in student) {
-    if(key !== 'id' && i < spans.length) {
-      spans[i].textContent = student[key];
-      i += 1;
-    }
+  const studentArr = objToArr(student);
+
+  for(let key of studentArr) {
+
+    spans[i].textContent = key;
+    i += 1;
   }
 }
 

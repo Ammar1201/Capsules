@@ -31,6 +31,7 @@ body {
 .light-button, .dark-button {
   padding: .5rem 2rem;
   font-size: 1.2rem;
+  margin-right: 5px;
 }
 
 .light-button {
@@ -52,7 +53,7 @@ body {
   align-self: flex-end;
   justify-content: flex-end;
   align-items: flex-end;
-  gap: 5px;
+  /* gap: 5px; */
 }
 
 /** main header*/
@@ -97,8 +98,7 @@ header button {
 /** data header*/
 #header {
   display: flex;
-  /* gap: 8rem; */
-  gap: 4rem;
+  gap: 3.9rem;
   background-color: #009999;
   padding: 8px 0;
 }
@@ -114,9 +114,3 @@ header button {
 #header:first-child {
   padding-left: 5px;
 }
-
-/** data table*/
-/* #table > div{
-  display: flex;
-  gap: 8rem;
-} */
