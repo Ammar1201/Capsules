@@ -9,7 +9,8 @@ const reset = document.querySelector('#reset');
 const searchDropdown = document.querySelector('#searchDropDown');
 const searchInput = document.querySelector('#search');
 const info = [];  //* save the row information to add back when cancelling edit
-const rows = [];
+const rows = []; //* saving all the displayed rows to search for information according to the searchDropdown selected option
+const rowsChanges = []; //* saving all the displayed rows to search for information according to the searchDropdown selected option - can be modified
 let lightORdark = true; //* true - light class, false - dark class
 
 
@@ -82,6 +83,53 @@ const cancel = target => {
   target.remove();
 };
 
+const sortByID = (arr) => {
+  arr.sort((a, b) => { // sort students by ID
+    if(parseInt(a.id) > parseInt(b.id)) {
+      return 1;
+    }
+    return -1;
+  });
+};
+
+const sortNumbers = (arr, index) => {
+  const values = getValues(arr, index);
+   values.sort((a, b) => {
+    return a > b ? 1 : -1;
+  });
+
+  const tmp = [];
+  values.forEach(value => {
+    arr.forEach(row => {
+      const spans = selectSpans(row);
+      spans.forEach(span => {
+        if(span.textContent === value) {
+          tmp.push(row);
+        }
+      });
+    });
+  });
+  return tmp;
+};
+
+const sortStrings = (arr, index) => {
+  const values = getValues(arr, index);
+   values.sort();
+
+  const tmp = [];
+  values.forEach(value => {
+    arr.forEach(row => {
+      const spans = selectSpans(row);
+      spans.forEach(span => {
+        if(span.textContent === value) {
+          tmp.push(row);
+        }
+      });
+    });
+  });
+  return tmp;
+};
+
 //* creating elements functions
 const createBtns = (cont) => {
   const editBtn = document.createElement('button');
@@ -149,12 +197,7 @@ const appendData = (student, row) => {
 const displayData = async () => {
   const students = await getData();
 
-  students.sort((a, b) => { // sort students by ID
-    if(parseInt(a.id) > parseInt(b.id)) {
-      return 1;
-    }
-    return -1;
-  });
+  sortByID(students);
 
   for(let student of students) {
     const row = createRow();
@@ -168,12 +211,7 @@ const resetData = async (target) => {
   let row = target.parentElement.nextElementSibling.firstElementChild.nextElementSibling;
   let counter = 0;
 
-  students.sort((a, b) => { // sort students by ID
-    if(parseInt(a.id) > parseInt(b.id)) {
-      return 1;
-    }
-    return -1;
-  });
+  sortByID(students);
 
   for(let student of students) {
     if(row != null) {
@@ -249,19 +287,19 @@ const confirmOrCancelEdit = (target, status) => {
   confirmEdit(target.nextElementSibling);
 };
 
-const removeRows = () => {
-  rows.forEach(row => row.remove());
+const removeRows = (arr) => {
+  arr.forEach(row => row.remove());
 };
 
-const addRows = () => {
-  rows.forEach(row => {
+const addRows = (arr) => {
+  arr.forEach(row => {
     table.appendChild(row);
   });
 };
 
-const getValues = index => {
+const getValues = (arr, index) => {
   const values = [];
-  rows.forEach(row => {
+  arr.forEach(row => {
     values.push(row.children[index].textContent);
   });
   return values;
@@ -298,7 +336,7 @@ const searchValue = (value, selectedOption) => {
       break;
   }
 
-  const values = getValues(index);
+  const values = getValues(rows, index);
 
   const indxs = [];
 
@@ -325,13 +363,73 @@ const startEvents = () => {
   searchInput.addEventListener('keyup', (event) => {
     const target = event.target;
     if(target.value !== '') {
-      removeRows();
+      removeRows(rows);
       const indxs = searchValue(target.value, searchDropdown.selectedOptions[0].textContent);
       addSpecificRows(indxs);
     }
     else if (target.value === '') {
-      addRows();
+      addRows(rows);
     }
+  });
+
+  header.addEventListener('click', (event) => {
+    const target = event.target;
+
+    let index = 0;
+
+    let tmp = [];
+
+    switch(target.textContent) {
+      case 'id':
+        removeRows(rows);
+        addRows(rows);
+        break;
+      case 'First Name':
+        index = 1;
+        tmp = sortStrings(rows, index);
+        removeRows(tmp);
+        addRows(tmp);
+        break;
+      case 'Last Name':
+        index = 2;
+        tmp = sortStrings(rows, index);
+        removeRows(tmp);
+        addRows(tmp);
+        break;
+      case 'Capsule':
+        index = 3;
+        tmp = sortNumbers(rows, index);
+        removeRows(tmp);
+        addRows(tmp);
+        break;
+      case 'age':
+        index = 4;
+        tmp = sortNumbers(rows, index);
+        removeRows(tmp);
+        addRows(tmp);
+        break;
+      case 'City':
+        index = 5;
+        tmp = sortStrings(rows, index);
+        removeRows(tmp);
+        addRows(tmp);
+        break;
+      case 'Gender':
+        index = 6;
+        tmp = sortStrings(rows, index);
+        removeRows(tmp);
+        addRows(tmp);
+        break;
+      case 'Hobby':
+        index = 7;
+        tmp = sortStrings(rows, index);
+        removeRows(tmp);
+        addRows(tmp);
+        break;
+    }
+  },
+  {
+    capture : true
   });
   
   table.addEventListener('click', (event) => {
@@ -361,8 +459,7 @@ const startEvents = () => {
   },
   {
     capture : true
-  }
-  );
+  });
 };
 
 const main = function() {
