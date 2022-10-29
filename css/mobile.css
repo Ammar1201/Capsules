@@ -1,0 +1,124 @@
+
+@media (max-width: 649px) {
+  #msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    text-align: center;
+    height: 80vh;
+  }
+
+  #msg h2 {
+    width: 200px;
+  }
+
+  header, #container {
+    display: none;
+  }
+}
+
+@media (min-width: 650px) and (max-width: 1000px) {
+  header {
+    gap: 1rem;
+    font-size: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  header input {
+    height: 30px;
+    width: 100px;
+
+  }
+  
+  header #searchDropDown {
+    height: 30px;
+    width: 100px;
+  }
+
+  header button {
+    padding: .5rem .5rem;
+  }
+
+  #container {
+    width: 80vw;
+  }
+
+  .light-row, .dark-row {
+    gap: 2.5rem;
+  }
+
+  .light-row > *, .dark-row > * {
+    width: 60px;
+  }
+
+  .light-row label, .dark-row label {
+    width: 20px;
+  }
+
+  .light-row :nth-child(4), .dark-row :nth-child(4) {
+    width: 20px;
+  }
+
+  .light-row :nth-child(5), .dark-row :nth-child(5) {
+    width: 40px;
+  }
+
+  .light-row :nth-child(8), .dark-row :nth-child(8) {
+    width: 150px;
+  }
+
+  .light-button, .dark-button {
+    padding: .2rem .5rem;
+    font-size: .8rem;
+  }
+
+  .font {
+    font-size: 1rem;
+  }
+
+  #header {
+    gap: 1.5rem;
+  }
+
+  #header button {
+    font-size: 1rem;
+    width: 60px;
+  }
+
+  #header :first-child {
+    width: 20px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .light-button, .dark-button {
+    padding: .5rem 1rem;
+    font-size: .8rem;
+  }
+
+  .font {
+    font-size: 1rem;
+  }
+
+  header {
+    gap: 2rem;
+    font-size: 1rem;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  #header {
+    gap: 3rem;
+  }
+
+  #header button {
+    font-size: .8rem;
+    width: 50px;
+  }
+}

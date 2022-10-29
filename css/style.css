@@ -8,6 +8,10 @@ body {
   background-color: #00cccc;
 }
 
+#msg {
+  display: none;
+}
+
 /** Utility  */
 .light-row, .dark-row {
   display: flex;
@@ -17,7 +21,7 @@ body {
 }
 
 .light-row > *, .dark-row > * {
-  width: 200px;;
+  width: 200px;
 }
 
 .light-row {
