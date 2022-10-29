@@ -6,8 +6,10 @@
 const table = document.querySelector('#container');
 const header = document.querySelector('#header');
 const reset = document.querySelector('#reset');
-const searchDropdown = document.querySelector('#searchDropdown');
-const info = [];
+const searchDropdown = document.querySelector('#searchDropDown');
+const searchInput = document.querySelector('#search');
+const info = [];  //* save the row information to add back when cancelling edit
+const rows = [];
 let lightORdark = true; //* true - light class, false - dark class
 
 
@@ -156,6 +158,7 @@ const displayData = async () => {
 
   for(let student of students) {
     const row = createRow();
+    rows.push(row);
     appendData(student, row);
   }
 }
@@ -246,6 +249,68 @@ const confirmOrCancelEdit = (target, status) => {
   confirmEdit(target.nextElementSibling);
 };
 
+const removeRows = () => {
+  rows.forEach(row => row.remove());
+};
+
+const addRows = () => {
+  rows.forEach(row => {
+    table.appendChild(row);
+  });
+};
+
+const getValues = index => {
+  const values = [];
+  rows.forEach(row => {
+    values.push(row.children[index].textContent);
+  });
+  return values;
+};
+
+const addSpecificRows = indxs => {
+  indxs.forEach(index => table.appendChild(rows[index]));
+};
+
+const searchValue = (value, selectedOption) => {
+
+  let index = 0;
+  switch(selectedOption) {
+    case 'First Name':
+      index = 1;
+      break;
+    case 'Last Name':
+      index = 2;
+      break;
+    case 'Capsule':
+      index = 3;
+      break;
+    case 'Age':
+      index = 4;
+      break;
+    case 'City':
+      index = 5;
+      break;
+    case 'Gender':
+      index = 6;
+      break;
+    case 'Hobby':
+      index = 7;
+      break;
+  }
+
+  const values = getValues(index);
+
+  const indxs = [];
+
+  values.forEach((val, index) => {
+    if(val.includes(value)) {
+      indxs.push(index);
+    }
+  });
+
+  return indxs;
+};
+
 //* event listeners
 const startEvents = () => {
   window.addEventListener('load', () => {
@@ -255,6 +320,18 @@ const startEvents = () => {
   reset.addEventListener('click', (event) => {
     lightORdark = true;
     resetData(event.target);
+  });
+
+  searchInput.addEventListener('keyup', (event) => {
+    const target = event.target;
+    if(target.value !== '') {
+      removeRows();
+      const indxs = searchValue(target.value, searchDropdown.selectedOptions[0].textContent);
+      addSpecificRows(indxs);
+    }
+    else if (target.value === '') {
+      addRows();
+    }
   });
   
   table.addEventListener('click', (event) => {
